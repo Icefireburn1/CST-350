@@ -31,6 +31,7 @@ namespace CST350_CLC.Controllers
             }
             else if (cells.ElementAt(cellNumber).isBomb == true)
             {
+                cells.ElementAt(cellNumber).CellState = 2;
                 List<CellModel> temp = cells;
                 ResetBoard();
                 return View("GameOver", temp);
