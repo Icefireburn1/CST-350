@@ -21,7 +21,7 @@ namespace CST350_CLC.Controllers
             UserModel verifiedUser = securityService.GetUser(user);
             if (verifiedUser != null)
             {
-                return View("LoginSuccess", verifiedUser);
+                return View("../Cell/Index", CellController.StartGame());
             }
             else
             {

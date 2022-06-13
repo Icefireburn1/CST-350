@@ -1,0 +1,59 @@
+﻿@model IEnumerable<CST350_CLC.Models.CellModel>
+
+<style>
+    .game-button {
+        width: 74px;
+        text-align:center;
+    }
+
+    .game-button-image{
+        max-width: 40%;
+    }
+
+    .button-zone {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .line-break{
+        flex-basis:100%;
+        height:0;
+    }
+
+    .button-label{
+        font-size: 8px;
+        text-align: center;
+    }
+</style>
+@{
+    string[] imagenames = { "button-icon-png-21052.png", "green-png-44876.png", "bomb-icon-28186.png" };
+}
+
+@{<script type="text/javascript">
+    window.onload = function() {
+        alert("You found a bomb and lost!");
+    };
+</script>
+}
+<h5>GAME OVER</h5>
+
+<div class="button-zone">
+    @for(int i = 0; i < Model.Count(); i++)
+    {
+        if(i % 10 == 0 )
+    {
+        <div class="line-break"></div>
+    }
+    
+<button class="game-button" name="cellNumber" value="@Model.ElementAt(i).Id"> 
+        <img class="game-button-image" src = "~/img/@imagenames[Model.ElementAt(i).CellState]"/>
+
+    <div class="button-label">
+            @Model.ElementAt(i).Id , @Model.ElementAt(i).CellState
+            <p>@Model.ElementAt(i).Neighbors</p>
+            <p>@Model.ElementAt(i).isBomb</p>
+    </div>
+</button>
+}
+</div>
+
