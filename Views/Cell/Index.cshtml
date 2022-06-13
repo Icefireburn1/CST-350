@@ -41,12 +41,14 @@
     <button class="game-button" name="cellNumber" type="submit" asp-controller="cell" asp-action="HandleCellClick" value="@Model.ElementAt(i).Id"> 
             <img class="game-button-image" src = "~/img/@imagenames[Model.ElementAt(i).CellState]"/>
 
-        <div class="button-label">
-                @Model.ElementAt(i).Id , @Model.ElementAt(i).CellState
-                <p>@Model.ElementAt(i).Neighbors</p>
-                <p>@Model.ElementAt(i).isBomb</p>
-        </div>
+    <div class="button-label">
+        @if(@Model.ElementAt(i).CellState == 1)
+        {
+            <p>@Model.ElementAt(i).Neighbors</p>
+        }
+    </div>
     </button>
 }
     </div>
+
 </form>

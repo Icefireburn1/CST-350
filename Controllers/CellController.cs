@@ -101,6 +101,7 @@ namespace CST350_CLC.Controllers
             }
         }
 
+        // Potential bug with separated cells becoming visited
         private static void FloodFill(int id)
         {
             if (id < 0 || id >= GRID_SIZE || cells.ElementAt(id).isBomb || cells.ElementAt(id).CellState == 1 || cells.ElementAt(id).Neighbors > 0)
