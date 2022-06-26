@@ -23,7 +23,6 @@ namespace CST350_CLC.Controllers
 
         public IActionResult HandleCellClick(int cellNumber)
         {
-
             if (cells.ElementAt(cellNumber).isBomb == false && cells.ElementAt(cellNumber).Neighbors > 0)
             {
                 cells.ElementAt(cellNumber).CellState = 1;
@@ -50,13 +49,32 @@ namespace CST350_CLC.Controllers
             return View("Index", cells);
         }
 
-        public IActionResult ShowOneCell(int cellNumber)
+        // Could probably use better naming since it can manipulate multiple cells
+        public IActionResult ShowOneCell(int cellNumber, bool flag)
         {
-
-            if (cells.ElementAt(cellNumber).isBomb == false && cells.ElementAt(cellNumber).Neighbors > 0)
+            // Make cell flag
+            if (flag && cells.ElementAt(cellNumber).CellState == 0)
+            {
+                cells.ElementAt(cellNumber).CellState = 3;
+                return PartialView(cells);
+            }
+            // Make flag a normal cell
+            else if (flag && cells.ElementAt(cellNumber).CellState == 3)
+            {
+                cells.ElementAt(cellNumber).CellState = 0;
+                return PartialView(cells);
+            }
+            // If flag and trying to click, don't do anything
+            else if (cells.ElementAt(cellNumber).CellState == 3)
+            {
+                return PartialView(cells);
+            }
+            // Reveal a single cell
+            else if (cells.ElementAt(cellNumber).isBomb == false && cells.ElementAt(cellNumber).Neighbors > 0)
             {
                 cells.ElementAt(cellNumber).CellState = 1;
             }
+            // Found a bomb
             else if (cells.ElementAt(cellNumber).isBomb == true)
             {
                 cells.ElementAt(cellNumber).CellState = 2;

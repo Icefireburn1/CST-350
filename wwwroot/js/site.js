@@ -11,19 +11,25 @@
 
         var cellNumber = $(this).val();
         console.log("Button number " + cellNumber + " was clicked");
-        doButtonUpdate(cellNumber);
+        doButtonUpdate(cellNumber, false);
+    });
+
+    $(document).on("contextmenu", ".game-button", function (event) {
+        event.preventDefault();
+        var cellNumber = $(this).val();
+        doButtonUpdate(cellNumber, true);
     });
 });
 
-function doButtonUpdate(cellNumber) {
+function doButtonUpdate(cellNumber, flag) {
     $.ajax({
         method: "POST",
         url: "/cell/showonecell",
         data: {
-            "cellNumber": cellNumber
+            "cellNumber": cellNumber,
+            "flag": flag
         },
         success: function (data) {
-            console.log(data);
             $(".button-zone").html(data);
         }
     });
