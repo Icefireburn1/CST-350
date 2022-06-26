@@ -11,7 +11,7 @@ namespace CST350_CLC.Controllers
         public static List<CellModel> cells = new List<CellModel>();
         Random random = new Random();
         const int GRID_SIZE = 100;
-        const int difficulty = 8;
+        const int difficulty = 1; // Less is more difficult
 
         public IActionResult Index()
         {
@@ -24,7 +24,6 @@ namespace CST350_CLC.Controllers
         public IActionResult HandleCellClick(int cellNumber)
         {
 
-            //cells.ElementAt(cellNumber).CellState = (cells.ElementAt(cellNumber).CellState + 2);
             if (cells.ElementAt(cellNumber).isBomb == false && cells.ElementAt(cellNumber).Neighbors > 0)
             {
                 cells.ElementAt(cellNumber).CellState = 1;
@@ -34,6 +33,7 @@ namespace CST350_CLC.Controllers
                 cells.ElementAt(cellNumber).CellState = 2;
                 List<CellModel> temp = cells;
                 ResetBoard();
+
                 return View("GameOver", temp);
             }
             FloodFill(cellNumber);
@@ -48,6 +48,35 @@ namespace CST350_CLC.Controllers
             
 
             return View("Index", cells);
+        }
+
+        public IActionResult ShowOneCell(int cellNumber)
+        {
+
+            if (cells.ElementAt(cellNumber).isBomb == false && cells.ElementAt(cellNumber).Neighbors > 0)
+            {
+                cells.ElementAt(cellNumber).CellState = 1;
+            }
+            else if (cells.ElementAt(cellNumber).isBomb == true)
+            {
+                cells.ElementAt(cellNumber).CellState = 2;
+                List<CellModel> temp = cells;
+                ResetBoard();
+
+                return PartialView("GameOver", temp);
+            }
+            FloodFill(cellNumber);
+
+            if (CheckForWin())
+            {
+                List<CellModel> temp = cells;
+                ResetBoard();
+
+                return PartialView("Victory", temp);
+            }
+
+
+            return PartialView(cells);
         }
 
         // Decide which cells will become live (bombs)
