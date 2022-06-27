@@ -16,6 +16,11 @@
 
     $(document).on("contextmenu", ".game-button", function (event) {
         event.preventDefault();
+
+        if ($("h5").hasClass("victory") || $("h5").hasClass("defeat")) {
+            return;
+        }
+
         var cellNumber = $(this).val();
         doButtonUpdate(cellNumber, true);
     });
