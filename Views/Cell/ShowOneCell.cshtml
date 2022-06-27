@@ -1,0 +1,36 @@
+﻿@model IEnumerable<CST350_CLC.Models.CellModel>
+
+@{
+    string[] imagenames = { "button-icon-png-21052.png", "green-png-44876.png", "bomb-icon-28186.png", "flag.png" };
+}
+
+@*<button class="game-button" type="submit" value="@Model.Id" name="cellNumber" asp-controller="cell" asp-action="HandleCellClick">
+        <img class="game-button-image" src="~/img/@imagenames[Model.CellState]" />
+    </button>*@
+
+<div class="button-zone">
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        if (i % 10 == 0)
+        {
+            <div class="line-break"></div>
+        }
+
+        <div class="oneCell" id="@i">
+            <button class="game-button" name="cellNumber" type="submit" asp-controller="cell" asp-action="HandleCellClick" value="@Model.ElementAt(i).Id">
+                <img class="game-button-image" src="~/img/@imagenames[Model.ElementAt(i).CellState]" />
+
+                <div class="button-label">
+                    @if (@Model.ElementAt(i).CellState == 1)
+                    {
+                        <p>@Model.ElementAt(i).Neighbors</p>
+                    }
+                    else
+                    {
+                        <p>?</p>
+                    }
+                </div>
+            </button>
+        </div>
+    }
+</div>
