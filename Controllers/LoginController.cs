@@ -21,12 +21,9 @@ namespace CST350_CLC.Controllers
             UserModel verifiedUser = SecurityService.GetUser(user);
             if (verifiedUser != null)
             {
-<<<<<<< HEAD
                 // Remember user
                 HttpContext.Session.SetString("username", user.username);
 
-=======
->>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
                 return View("../Cell/Index", CellBusinessService.StartGame());
             }
             else
