@@ -1,6 +1,18 @@
 ﻿$(function () {
     console.log("Page is ready");
 
+    $(document).on("click", ".save-button", function (event) {
+        event.preventDefault(); // Don't redirect to SaveGame URL
+
+        $.ajax({
+            method: "POST",
+            url: "/saveload/savegame",
+            success: function (data) {
+                alert(data);
+            }
+        });
+    });
+
     $(document).on("click", ".game-button", function (event) {
         event.preventDefault();
 
@@ -35,7 +47,7 @@ function doButtonUpdate(cellNumber, flag) {
             "flag": flag
         },
         success: function (data) {
-            $(".button-zone").html(data);
+            $(".game-board").html(data);
         }
     });
 }

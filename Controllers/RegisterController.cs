@@ -17,9 +17,8 @@ namespace CST350_CLC.Controllers
 
         public IActionResult ProcessRegister(UserModel user)
         {
-            SecurityService securityService = new SecurityService();
 
-            if (securityService.UserRegistered(user))
+            if (SecurityService.UserRegistered(user))
             {
                 return View("RegisterSuccess", user);
             }

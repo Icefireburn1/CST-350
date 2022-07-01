@@ -6,18 +6,55 @@ using System.Threading.Tasks;
 
 namespace CST350_CLC.Services
 {
-    public class SecurityService
+    public static class SecurityService
     {
-        SecurityDAO securityDAO = new SecurityDAO();
+        readonly static SecurityDAO securityDAO = new SecurityDAO();
 
-        public UserModel GetUser(UserModel user)
+        public static UserModel GetUser(UserModel user)
         {
             return securityDAO.FindUserByNameAndPassword(user);
         }
 
-        public bool UserRegistered(UserModel user)
+        public static UserModel GetUserByUsername(string name)
+        {
+            return securityDAO.FindUserByUsername(name);
+        }
+
+        public static bool UserRegistered(UserModel user)
         {
             return securityDAO.CreateUser(user);
+        }
+
+        public static bool CreateGameSave(UserModel user, List<CellModel> cells)
+        {
+            string gameData = "";
+            foreach(CellModel c in cells) {
+
+                if (c.isBomb)
+                {
+                    gameData += -1 + ",";
+                    continue;
+                }
+
+                gameData += c.CellState.ToString() + ",";
+            }
+
+            return securityDAO.CreateGameSave(user, gameData);
+        }
+
+        internal static List<GameSaveModel> GetUsersSavedGames(UserModel user)
+        {
+            return securityDAO.GetGameSaves(user);
+        }
+
+        public static List<string> GetGameById(int id)
+        {
+            return securityDAO.GetGameById(id);
+        }
+
+        internal static bool DeleteGameSave(int id)
+        {
+            return securityDAO.DeleteGameSave(id);
         }
     }
 }

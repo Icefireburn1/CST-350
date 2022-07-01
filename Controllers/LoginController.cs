@@ -1,5 +1,6 @@
 ﻿using CST350_CLC.Models;
 using CST350_CLC.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,14 +18,18 @@ namespace CST350_CLC.Controllers
 
         public IActionResult ProcessLogin(UserModel user)
         {
-            SecurityService securityService = new SecurityService();
-            UserModel verifiedUser = securityService.GetUser(user);
+            UserModel verifiedUser = SecurityService.GetUser(user);
             if (verifiedUser != null)
             {
+                // Remember user
+                HttpContext.Session.SetString("username", user.username);
+
                 return View("../Cell/Index", CellBusinessService.StartGame());
             }
             else
             {
+                HttpContext.Session.Remove("username");
+
                 return View("LoginFailure", user);
             }
         }
