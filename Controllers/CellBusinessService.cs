@@ -5,15 +5,26 @@ using System.Linq;
 
 namespace CST350_CLC.Services
 {
+<<<<<<< HEAD
     public static class CellBusinessService
     {
         public static List<CellModel> cells = new List<CellModel>();
+=======
+    public class CellBusinessService
+    {
+        public static List<CellModel> cells = new List<CellModel>();
+        Random random = new Random();
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
         const int GRID_SIZE = 100;
         const int difficulty = 1; // Less is more difficult
         static string gameState = "Index";
 
         // Sets up Minesweeper board
+<<<<<<< HEAD
         public static List<CellModel> SetupGame()
+=======
+        public List<CellModel> SetupGame()
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
         {
             ResetBoard();
             SetupLiveNeighbors(difficulty);
@@ -23,7 +34,11 @@ namespace CST350_CLC.Services
         }
 
         // Handles cell clicks (if or if not bomb)
+<<<<<<< HEAD
         public static List<CellModel> ClickHandling(int cellNumber)
+=======
+        public List<CellModel> ClickHandling(int cellNumber)
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
         {
             if (cells.ElementAt(cellNumber).isBomb == false && cells.ElementAt(cellNumber).Neighbors > 0)
             {
@@ -52,6 +67,7 @@ namespace CST350_CLC.Services
             return cells;
         }
 
+<<<<<<< HEAD
         public static int GetPercentFinished(string gameData)
         {
             List<string> states = gameData.Split(",").ToList();
@@ -70,6 +86,10 @@ namespace CST350_CLC.Services
 
         // Handles Flag clicks
         public static List<CellModel> FlagHandling(int cellNumber, bool flag)
+=======
+        // Handles Flag clicks
+        public List<CellModel> FlagHandling(int cellNumber, bool flag)
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
         {
             // Make cell flag
             if (flag && cells.ElementAt(cellNumber).CellState == 0)
@@ -119,7 +139,11 @@ namespace CST350_CLC.Services
         }
 
         // Handles Game Over and Victory
+<<<<<<< HEAD
         public static string GetView(int cellNumber)
+=======
+        public string GetView(int cellNumber)
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
         {
             return gameState;
         }
@@ -194,7 +218,11 @@ namespace CST350_CLC.Services
                 FloodFill(id + 10); // Check Down
         }
 
+<<<<<<< HEAD
         private static bool CheckForWin()
+=======
+        private bool CheckForWin()
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
         {
             bool victory = true;
             foreach (var cell in cells)
@@ -234,6 +262,7 @@ namespace CST350_CLC.Services
 
             return cells;
         }
+<<<<<<< HEAD
 
         public static List<CellModel> LoadGame(int id)
         {
@@ -260,5 +289,7 @@ namespace CST350_CLC.Services
 
             return cells;
         }
+=======
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
     }
 }

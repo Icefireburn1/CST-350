@@ -1,6 +1,7 @@
 ﻿$(function () {
     console.log("Page is ready");
 
+<<<<<<< HEAD
     $(document).on("click", ".save-button", function (event) {
         event.preventDefault(); // Don't redirect to SaveGame URL
 
@@ -13,6 +14,8 @@
         });
     });
 
+=======
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
     $(document).on("click", ".game-button", function (event) {
         event.preventDefault();
 
@@ -47,7 +50,11 @@ function doButtonUpdate(cellNumber, flag) {
             "flag": flag
         },
         success: function (data) {
+<<<<<<< HEAD
             $(".game-board").html(data);
+=======
+            $(".button-zone").html(data);
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
         }
     });
 }

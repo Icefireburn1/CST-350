@@ -3,10 +3,17 @@
 <style>
     .game-button {
         width: 74px;
+<<<<<<< HEAD
         text-align: center;
     }
 
     .game-button-image {
+=======
+        text-align:center;
+    }
+
+    .game-button-image{
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
         max-width: 40%;
     }
 
@@ -15,12 +22,21 @@
         flex-wrap: wrap;
     }
 
+<<<<<<< HEAD
     .line-break {
         flex-basis: 100%;
         height: 0;
     }
 
     .button-label {
+=======
+    .line-break{
+        flex-basis:100%;
+        height:0;
+    }
+
+    .button-label{
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
         font-size: 8px;
         text-align: center;
     }
@@ -30,6 +46,7 @@
 }
 <p>Current Time: @DateTime.Now</p>
 <form>
+<<<<<<< HEAD
     <div class="game-board">
         <div class="button-zone">
             @for (int i = 0; i < Model.Count(); i++)
@@ -60,6 +77,33 @@
         </div>
         <button class="save-button" asp-controller="SaveLoad" asp-action="SaveGame">Save Game</button>
         <button class="load-button" asp-controller="SaveLoad" asp-action="LoadMenu" value="@Model">Load Game</button>
+=======
+    <div class="button-zone">
+        @for(int i = 0; i < Model.Count(); i++)
+        {
+            if(i % 10 == 0 )
+        {
+            <div class="line-break"></div>
+        }
+    
+            <div class="oneCell" id="@i">
+                <button class="game-button" name="cellNumber" type="submit" asp-controller="cell" asp-action="HandleCellClick" value="@Model.ElementAt(i).Id">
+                    <img class="game-button-image" src="~/img/@imagenames[Model.ElementAt(i).CellState]" />
+
+                    <div class="button-label">
+                        @if (@Model.ElementAt(i).CellState == 1)
+                        {
+                            <p>@Model.ElementAt(i).Neighbors</p>
+                        }
+                        else
+                        {
+                            <p>?</p>
+                        }
+                    </div>
+                </button>
+            </div>
+        }
+>>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f
     </div>
 
 </form>
