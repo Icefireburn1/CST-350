@@ -1,4 +1,6 @@
-﻿using CST350_CLC.Models;
+﻿using CST350_CLC.Interfaces;
+using CST350_CLC.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,45 +11,17 @@ namespace CST350_CLC.Services
     {
         public static List<CellModel> cells = new List<CellModel>();
         const int GRID_SIZE = 100;
-        const int difficulty = 1; // Less is more difficult
+        static int lives = -1;
         static string gameState = "Index";
+
+        public static IDifficulty SelectedDifficulty { get; set; }
 
         // Sets up Minesweeper board
         public static List<CellModel> SetupGame()
         {
             ResetBoard();
-            SetupLiveNeighbors(difficulty);
+            SetupLiveNeighbors();
             CalculateLiveNeighbors();
-
-            return cells;
-        }
-
-        // Handles cell clicks (if or if not bomb)
-        public static List<CellModel> ClickHandling(int cellNumber)
-        {
-            if (cells.ElementAt(cellNumber).isBomb == false && cells.ElementAt(cellNumber).Neighbors > 0)
-            {
-                cells.ElementAt(cellNumber).CellState = 1;
-            }
-            else if (cells.ElementAt(cellNumber).isBomb == true)
-            {
-                cells.ElementAt(cellNumber).CellState = 2;
-                List<CellModel> temp = cells;
-                ResetBoard();
-
-                gameState = "GameOver";
-                return temp;
-            }
-            FloodFill(cellNumber);
-
-            if (CheckForWin())
-            {
-                List<CellModel> temp = cells;
-                ResetBoard();
-
-                gameState = "Victory";
-                return temp;
-            }
 
             return cells;
         }
@@ -68,8 +42,8 @@ namespace CST350_CLC.Services
             return finished;
         }
 
-        // Handles Flag clicks
-        public static List<CellModel> FlagHandling(int cellNumber, bool flag)
+        // Handles clicks && flags
+        public static List<CellModel> ClickHandling(int cellNumber, bool flag)
         {
             // Make cell flag
             if (flag && cells.ElementAt(cellNumber).CellState == 0)
@@ -94,9 +68,18 @@ namespace CST350_CLC.Services
                 cells.ElementAt(cellNumber).CellState = 1;
             }
             // Found a bomb
-            else if (cells.ElementAt(cellNumber).isBomb == true)
+            else if (SelectedDifficulty.CheckForBomb(cells.ElementAt(cellNumber)))
             {
                 cells.ElementAt(cellNumber).CellState = 2;
+
+                // Continue if we still have lives
+                if (lives > 1)
+                {
+                    lives -= 1;
+
+                    return cells;
+                }
+
                 List<CellModel> temp = cells;
                 ResetBoard();
 
@@ -106,7 +89,7 @@ namespace CST350_CLC.Services
             }
             FloodFill(cellNumber);
 
-            if (CheckForWin())
+            if (SelectedDifficulty.CheckForWin(cells))
             {
                 List<CellModel> temp = cells;
                 ResetBoard();
@@ -119,22 +102,15 @@ namespace CST350_CLC.Services
         }
 
         // Handles Game Over and Victory
-        public static string GetView(int cellNumber)
+        public static string GetView()
         {
             return gameState;
         }
 
         // Decide which cells will become live (bombs)
-        private static void SetupLiveNeighbors(int difficulty)
+        private static void SetupLiveNeighbors()
         {
-            Random ran = new Random();
-            foreach (var cell in cells)
-            {
-                int chance = ran.Next(0, 100);
-
-                if (chance <= difficulty)
-                    cell.isBomb = true;
-            }
+            cells = SelectedDifficulty.CreateBombs(cells);
         }
 
         // Generates the # of neighbors for each cell
@@ -194,28 +170,14 @@ namespace CST350_CLC.Services
                 FloodFill(id + 10); // Check Down
         }
 
-        private static bool CheckForWin()
-        {
-            bool victory = true;
-            foreach (var cell in cells)
-            {
-                if (cell.isBomb == false && cell.CellState == 0)
-                {
-                    victory = false;
-                }
-            }
-
-            return victory;
-        }
-
         // Resets Minesweeper Game
         private static void ResetBoard()
         {
             gameState = "Index";
+            lives = SelectedDifficulty.GetStartingLives();
             cells = new List<CellModel>();
             if (cells.Count < GRID_SIZE)
             {
-
                 for (int i = 0; i < GRID_SIZE; i++)
                 {
 
@@ -223,7 +185,7 @@ namespace CST350_CLC.Services
                 }
             }
 
-            SetupLiveNeighbors(difficulty);
+            SetupLiveNeighbors();
             CalculateLiveNeighbors();
         }
 
@@ -235,12 +197,13 @@ namespace CST350_CLC.Services
             return cells;
         }
 
+        // Loads the game from our database
         public static List<CellModel> LoadGame(int id)
         {
             ResetBoard();
 
             List<string> cellStates = SecurityService.GetGameById(id);
-            int state = -99;
+            int state;
             for(int i = 0; i < cells.Count; i++)
             {
                 state = Int32.Parse(cellStates.ElementAt(i));

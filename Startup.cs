@@ -1,3 +1,5 @@
+using CST350_CLC.Interfaces;
+using CST350_CLC.Utility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +35,8 @@ namespace CST350_CLC
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
+            services.AddTransient<IDifficulty, HardDifficulty>();
 
             services.AddControllersWithViews();
         }

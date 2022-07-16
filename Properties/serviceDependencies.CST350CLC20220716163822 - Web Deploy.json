@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/cst350-clcdbserver/databases/CST350_CLC_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:milestone350",
+      "secretStore": null
+    }
+  }
+}

@@ -4,11 +4,9 @@
     string[] imagenames = { "button-icon-png-21052.png", "green-png-44876.png", "bomb-icon-28186.png", "flag.png" };
 }
 
-@*<button class="game-button" type="submit" value="@Model.Id" name="cellNumber" asp-controller="cell" asp-action="HandleCellClick">
-        <img class="game-button-image" src="~/img/@imagenames[Model.CellState]" />
-    </button>*@
-<<<<<<< HEAD
 <div class="game-board">
+    <p>Difficulty: @ViewBag.DifficultyName</p>
+    <p>Current Time: @DateTime.Now</p>
     <div class="button-zone">
         @for (int i = 0; i < Model.Count(); i++)
         {
@@ -26,7 +24,7 @@
                         {
                             <p>@Model.ElementAt(i).Neighbors</p>
                         }
-                        else
+                        else if (@Model.ElementAt(i).isBomb == false)
                         {
                             <p>?</p>
                         }
@@ -36,7 +34,6 @@
         }
     </div>
 </div>
-=======
 
 <div class="button-zone">
     @for (int i = 0; i < Model.Count(); i++)
@@ -55,7 +52,7 @@
                     {
                         <p>@Model.ElementAt(i).Neighbors</p>
                     }
-                    else
+                    else if (@Model.ElementAt(i).isBomb == false)
                     {
                         <p>?</p>
                     }
@@ -64,4 +61,3 @@
         </div>
     }
 </div>
->>>>>>> 98796512f41c8100cae98063bf189a0963bbdc9f

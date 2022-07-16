@@ -9,7 +9,7 @@ namespace CST350_CLC.Services
 {
     public class SecurityDAO
     {
-        readonly string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog = CST350; Integrated Security = True; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        readonly string connectionString = @"Data Source=tcp:cst350-clcdbserver.database.windows.net,1433;Initial Catalog=CST350_CLC_db;User Id=icefireburn1@cst350-clcdbserver;Password=Tt110997";
 
         public bool CreateUser(UserModel user)
         {

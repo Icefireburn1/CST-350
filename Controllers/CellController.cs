@@ -1,4 +1,5 @@
-﻿using CST350_CLC.Models;
+﻿using CST350_CLC.Interfaces;
+using CST350_CLC.Models;
 using CST350_CLC.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace CST350_CLC.Controllers
         [CustomAuthorization]
         public IActionResult Index()
         {
+            ViewBag.DifficultyName = CellBusinessService.SelectedDifficulty.GetDifficultyName(); // Send difficulty name to view
             return View("Index", CellBusinessService.SetupGame());
         }
 
@@ -20,15 +22,18 @@ namespace CST350_CLC.Controllers
         [CustomAuthorization]
         public IActionResult HandleCellClick(int cellNumber)
         {
-            return View(CellBusinessService.GetView(cellNumber), CellBusinessService.ClickHandling(cellNumber));
+            ViewBag.DifficultyName = CellBusinessService.SelectedDifficulty.GetDifficultyName(); // Send difficulty name to view
+            return View(CellBusinessService.GetView(), CellBusinessService.ClickHandling(cellNumber, false));
         }
 
         // handles flagging and bombs for cells
         [CustomAuthorization]
         public IActionResult ShowOneCell(int cellNumber, bool flag)
         {
-            List<CellModel> repo = CellBusinessService.FlagHandling(cellNumber, flag); // Make object here so we call it before GetView()
-            return PartialView(CellBusinessService.GetView(cellNumber), repo);
+            ViewBag.DifficultyName = CellBusinessService.SelectedDifficulty.GetDifficultyName(); // Send difficulty name to view
+
+            List<CellModel> cells = CellBusinessService.ClickHandling(cellNumber, flag);          // Make object here so we call it before GetView()
+            return PartialView(CellBusinessService.GetView(), cells);
         }
     }
 }
